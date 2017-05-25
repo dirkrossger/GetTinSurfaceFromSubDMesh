@@ -1,0 +1,13 @@
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.dll
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.pdb
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AecBaseMgd.dll
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AeccDbMgd.dll
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.csprojResolveAssemblyReference.cache
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.dll
+h:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.pdb
+c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.dll
+c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.pdb
+c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AecBaseMgd.dll
+c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AeccDbMgd.dll
+c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.dll
+c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.pdb
