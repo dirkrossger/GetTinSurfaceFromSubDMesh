@@ -116,5 +116,43 @@ namespace GetVerticesFromSubDMesh
             }
             return collPoints;
         }
+
+        public static List<MeshDatas> GetMeshBlocksVertices()
+        {
+            Document activeDoc = Application.DocumentManager.MdiActiveDocument;
+            Database db = activeDoc.Database;
+            Editor ed = activeDoc.Editor;
+
+            TypedValue[] values = { new TypedValue((int)DxfCode.Start, "MESH") };
+
+            SelectionFilter filter = new SelectionFilter(values);
+            PromptSelectionResult psr = ed.SelectAll(filter);
+            SelectionSet ss = psr.Value;
+            if (ss == null)
+                return null;
+
+            List<MeshDatas> datas = new List<MeshDatas>();
+
+            using (Transaction trans = db.TransactionManager.StartTransaction())
+            {
+                for (int i = 0; i < ss.Count; ++i)
+                {
+                    SubDMesh mesh = trans.GetObject(ss[i].ObjectId, OpenMode.ForRead) as SubDMesh;
+                    Point3dCollection collPoints = new Point3dCollection();
+
+                    // Get the vertices information
+                    int vcount = 0;
+                    foreach (Point3d vertex in mesh.Vertices)
+                    {
+                        //ed.WriteMessage(String.Format("\n Vertex {0} - {1} {2}", vcount++, vertex.X, vertex.Y));
+                        collPoints.Add(new Point3d(vertex.X, vertex.Y, vertex.Z));
+                    }
+                    datas.Add(new MeshDatas { Increment = i, Points = collPoints });
+
+                }
+                trans.Commit();
+            }
+            return datas;
+        }
     }
 }

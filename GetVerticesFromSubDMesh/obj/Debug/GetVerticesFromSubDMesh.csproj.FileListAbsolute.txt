@@ -11,3 +11,9 @@ c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFrom
 c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AeccDbMgd.dll
 c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.dll
 c:\Git-repository\GetSurfaceFromPolymesh\GetVerticesFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.pdb
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.dll
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.pdb
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AecBaseMgd.dll
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AeccDbMgd.dll
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.dll
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.pdb

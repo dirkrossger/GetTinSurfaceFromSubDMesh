@@ -19,6 +19,14 @@ namespace GetVerticesFromSubDMesh
     public class Commands
     {
         [CommandMethod("xx")]
+
+        #region Create Boundary from SubDMesh object
+        public void Start()
+        {
+            List<MeshDatas> vertBlocks = cMesh.GetMeshBlocksVertices();
+        }
+        #endregion
+
         //#region Create Surface from SubDMesh object
         //public void Start()
         //{
@@ -28,15 +36,15 @@ namespace GetVerticesFromSubDMesh
         //}
         //#endregion
 
-        #region Add Points on vertices from SubDMesh
-        public void Start()
-        {
-            Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
-            foreach(Point3d p3 in coll3d)
-            {
-                cPoint.AddPoint(p3);
-            }
-        }
-        #endregion
+        //#region Create Points on vertices from SubDMesh
+        //public void Start()
+        //{
+        //    Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
+        //    foreach(Point3d p3 in coll3d)
+        //    {
+        //        cPoint.AddPoint(p3);
+        //    }
+        //}
+        //#endregion
     }
 }
