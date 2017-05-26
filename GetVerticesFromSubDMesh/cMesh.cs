@@ -165,21 +165,38 @@ namespace GetVerticesFromSubDMesh
             {
                 // Open the Block table for read
                 BlockTable acBlkTbl;
-                acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId,
-                                                OpenMode.ForRead) as BlockTable;
+                acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead) as BlockTable;
 
                 // Open the Block table record Model space for write
                 BlockTableRecord acBlkTblRec;
-                acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace],
-                                                OpenMode.ForWrite) as BlockTableRecord;
+                acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
                 // Create a polyline with two segments (3 points)
                 using (Polyline acPoly = new Polyline())
                 {
-                    for(int i = 0; i < verticies.Count; i++)
+                    int vnr = 0;
+                    int incr = 0;
+
+                    #region All verticies
+                    for (int i = 0; i < verticies.Count; i++)
                     {
-                        acPoly.AddVertexAt(i, new Point2d(verticies[i].X, verticies[i].Y), 0, 0, 0);
+                        acPoly.AddVertexAt(vnr, new Point2d(verticies[i].X, verticies[i].Y), 0, 0, 0);
+                        vnr++;
                     }
+                    #endregion
+
+                    //#region Distance between verticies max 5meter
+                    //while (vnr < verticies.Count && 1+ incr < verticies.Count)
+                    //{
+                    //    if (cPoint.Distance(verticies[incr], verticies[1+ incr]) < 5) //Distance between verticies max 5meter
+                    //    {
+                    //        acPoly.AddVertexAt(vnr, new Point2d(verticies[incr].X, verticies[incr].Y), 0, 0, 0);
+                    //        //verticies.RemoveAt(incr);
+                    //        vnr++;
+                    //    }
+                    //    incr++;
+                    //}
+                    //#endregion
 
                     // Add the new object to the block table record and the transaction
                     acBlkTblRec.AppendEntity(acPoly);

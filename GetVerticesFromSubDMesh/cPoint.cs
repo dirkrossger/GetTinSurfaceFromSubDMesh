@@ -44,5 +44,10 @@ namespace GetVerticesFromSubDMesh
                 acTrans.Commit();
             }
         }
+
+        public static double Distance(Point3d p1, Point3d p2)
+        {
+            return p1.GetVectorTo(p2).Length;
+        }
     }
 }
