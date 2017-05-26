@@ -147,12 +147,24 @@ namespace GetVerticesFromSubDMesh
                         //ed.WriteMessage(String.Format("\n Vertex {0} - {1} {2}", vcount++, vertex.X, vertex.Y));
                         collPoints.Add(new Point3d(vertex.X, vertex.Y, vertex.Z));
                     }
-                    datas.Add(new MeshDatas { Increment = i, Points = collPoints });
+                    datas.Add(new MeshDatas { Mesh = mesh, Increment = i, Points = collPoints });
 
                 }
                 trans.Commit();
             }
             return datas;
+        }
+
+        public static void GetMeshBoundary(SubDMesh mesh)
+        {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+
+            try
+            {
+                acDoc.SendStringToExecute("lineworkshrinkwrap", true, false, false);
+            }
+            catch(System.Exception ex)
+            { }
         }
     }
 }

@@ -23,7 +23,11 @@ namespace GetVerticesFromSubDMesh
         #region Create Boundary from SubDMesh object
         public void Start()
         {
-            List<MeshDatas> vertBlocks = cMesh.GetMeshBlocksVertices();
+            List<MeshDatas> list = cMesh.GetMeshBlocksVertices();
+            foreach(MeshDatas x in list)
+            {
+                cMesh.GetMeshBoundary(x.Mesh);
+            }
         }
         #endregion
 

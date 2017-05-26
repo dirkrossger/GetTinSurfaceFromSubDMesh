@@ -14,5 +14,7 @@ namespace GetVerticesFromSubDMesh
     {
         public int Increment { get; set; }
         public Point3dCollection Points { get; set; }
+
+        public SubDMesh Mesh { get; set; }
     }
 }
