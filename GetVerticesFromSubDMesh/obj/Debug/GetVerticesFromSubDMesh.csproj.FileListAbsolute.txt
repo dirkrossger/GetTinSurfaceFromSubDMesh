@@ -17,3 +17,4 @@ H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\Ae
 H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\AeccDbMgd.dll
 H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.dll
 H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.pdb
+H:\GIT-repository\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.csprojResolveAssemblyReference.cache

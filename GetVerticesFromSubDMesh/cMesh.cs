@@ -207,5 +207,28 @@ namespace GetVerticesFromSubDMesh
                 acTrans.Commit();
             }
         }
+
+        public static void GetMeshExtents(SubDMesh mesh)
+        {
+            Extents3d extents;
+            try
+            {
+                extents = mesh.GeometricExtents;
+            }
+            catch (Autodesk.AutoCAD.Runtime.Exception ex)
+            {
+                if (ex.Message == "eNullExtents")
+                // The entity is empty and has no extents
+                {
+                    // TODO. We can simply skip this entity...
+                }
+                else
+                {
+                    //  something is wrong ...
+                    //TODO!
+
+                }
+            }
+        }
     }
 }

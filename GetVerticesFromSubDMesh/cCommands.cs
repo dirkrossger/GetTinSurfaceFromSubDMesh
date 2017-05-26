@@ -19,17 +19,28 @@ namespace GetVerticesFromSubDMesh
     public class Commands
     {
         [CommandMethod("xx")]
-
-        #region Create Boundary from SubDMesh object
         public void Start()
         {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+
             List<MeshDatas> list = cMesh.GetMeshBlocksVertices();
-            foreach(MeshDatas x in list)
+            foreach (MeshDatas x in list)
             {
-                cMesh.GetMeshBoundary(x.Points);
+                cEntity.ObjectsToEnclose(x.Mesh as Entity);
             }
+            acDoc.SendStringToExecute(" ", true, false, false);
         }
-        #endregion
+
+        //#region Create Boundary from SubDMesh object
+        //public void Start()
+        //{
+        //    List<MeshDatas> list = cMesh.GetMeshBlocksVertices();
+        //    foreach(MeshDatas x in list)
+        //    {
+        //        cMesh.GetMeshBoundary(x.Points);
+        //    }
+        //}
+        //#endregion
 
         //#region Create Surface from SubDMesh object
         //public void Start()
