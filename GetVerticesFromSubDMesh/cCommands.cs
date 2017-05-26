@@ -26,7 +26,7 @@ namespace GetVerticesFromSubDMesh
             List<MeshDatas> list = cMesh.GetMeshBlocksVertices();
             foreach(MeshDatas x in list)
             {
-                cMesh.GetMeshBoundary(x.Mesh);
+                cMesh.GetMeshBoundary(x.Points);
             }
         }
         #endregion

@@ -155,16 +155,40 @@ namespace GetVerticesFromSubDMesh
             return datas;
         }
 
-        public static void GetMeshBoundary(SubDMesh mesh)
+        public static void GetMeshBoundary(Point3dCollection verticies)
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            Database acCurDb = acDoc.Database;
 
-            try
+            // Start a transaction
+            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
             {
-                acDoc.SendStringToExecute("lineworkshrinkwrap", true, false, false);
+                // Open the Block table for read
+                BlockTable acBlkTbl;
+                acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId,
+                                                OpenMode.ForRead) as BlockTable;
+
+                // Open the Block table record Model space for write
+                BlockTableRecord acBlkTblRec;
+                acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace],
+                                                OpenMode.ForWrite) as BlockTableRecord;
+
+                // Create a polyline with two segments (3 points)
+                using (Polyline acPoly = new Polyline())
+                {
+                    for(int i = 0; i < verticies.Count; i++)
+                    {
+                        acPoly.AddVertexAt(i, new Point2d(verticies[i].X, verticies[i].Y), 0, 0, 0);
+                    }
+
+                    // Add the new object to the block table record and the transaction
+                    acBlkTblRec.AppendEntity(acPoly);
+                    acTrans.AddNewlyCreatedDBObject(acPoly, true);
+                }
+
+                // Save the new object to the database
+                acTrans.Commit();
             }
-            catch(System.Exception ex)
-            { }
         }
     }
 }
