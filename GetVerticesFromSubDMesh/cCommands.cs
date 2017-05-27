@@ -23,43 +23,35 @@ namespace GetVerticesFromSubDMesh
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
 
-            List<MeshDatas> list = cMesh.GetMeshBlocksVertices();
+            List<MeshDatas> list = cMesh.GetMeshDatas();
+
+            #region Create Boundary from SubDMesh object
             foreach (MeshDatas x in list)
             {
                 cEntity.ObjectsToEnclose(x.Mesh as Entity);
             }
             acDoc.SendStringToExecute(" ", true, false, false);
+            #endregion
+
+            #region Create Surface from SubDMesh object
+            cTinSurface oTinsurf = new cTinSurface();
+            oTinsurf.CreateTinSurface("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
+            oTinsurf.AddPointsToSurface();
+            #endregion
         }
 
-        //#region Create Boundary from SubDMesh object
-        //public void Start()
-        //{
-        //    List<MeshDatas> list = cMesh.GetMeshBlocksVertices();
-        //    foreach(MeshDatas x in list)
-        //    {
-        //        cMesh.GetMeshBoundary(x.Points);
-        //    }
-        //}
-        //#endregion
-
-        //#region Create Surface from SubDMesh object
-        //public void Start()
-        //{
-        //    cTinSurface oTinsurf = new cTinSurface();
-        //    oTinsurf.CreateTinSurface("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
-        //    oTinsurf.AddPointsToSurface();
-        //}
-        //#endregion
-
-        //#region Create Points on vertices from SubDMesh
-        //public void Start()
-        //{
-        //    Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
-        //    foreach(Point3d p3 in coll3d)
-        //    {
-        //        cPoint.AddPoint(p3);
-        //    }
-        //}
-        //#endregion
     }
+
+
+
+    //#region Create Points on vertices from SubDMesh
+    //public void Start()
+    //{
+    //    Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
+    //    foreach(Point3d p3 in coll3d)
+    //    {
+    //        cPoint.AddPoint(p3);
+    //    }
+    //}
+    //#endregion
 }

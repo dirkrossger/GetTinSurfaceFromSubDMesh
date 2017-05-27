@@ -19,67 +19,67 @@ namespace GetVerticesFromSubDMesh
 {
     class cMesh
     {
-        public static void SubDMeshTest()
-        {
-            Document activeDoc = Application.DocumentManager.MdiActiveDocument;
-            Database db = activeDoc.Database;
-            Editor ed = activeDoc.Editor;
+        //public static void SubDMeshTest()
+        //{
+        //    Document activeDoc = Application.DocumentManager.MdiActiveDocument;
+        //    Database db = activeDoc.Database;
+        //    Editor ed = activeDoc.Editor;
 
-            TypedValue[] values = { new TypedValue((int)DxfCode.Start, "MESH") };
+        //    TypedValue[] values = { new TypedValue((int)DxfCode.Start, "MESH") };
 
-            SelectionFilter filter = new SelectionFilter(values);
-            PromptSelectionResult psr = ed.SelectAll(filter);
-            SelectionSet ss = psr.Value;
-            if (ss == null)
-                return;
+        //    SelectionFilter filter = new SelectionFilter(values);
+        //    PromptSelectionResult psr = ed.SelectAll(filter);
+        //    SelectionSet ss = psr.Value;
+        //    if (ss == null)
+        //        return;
 
-            using (Transaction trans = db.TransactionManager.StartTransaction())
-            {
-                for (int i = 0; i < ss.Count; ++i)
-                {
-                    SubDMesh mesh = trans.GetObject(ss[i].ObjectId, OpenMode.ForRead) as SubDMesh;
+        //    using (Transaction trans = db.TransactionManager.StartTransaction())
+        //    {
+        //        for (int i = 0; i < ss.Count; ++i)
+        //        {
+        //            SubDMesh mesh = trans.GetObject(ss[i].ObjectId, OpenMode.ForRead) as SubDMesh;
 
-                    ed.WriteMessage(String.Format("\n Vertices : {0}", mesh.NumberOfVertices));
-                    ed.WriteMessage(String.Format("\n Edges    : {0}", mesh.NumberOfEdges));
-                    ed.WriteMessage(String.Format("\n Faces    : {0}", mesh.NumberOfFaces));
+        //            ed.WriteMessage(String.Format("\n Vertices : {0}", mesh.NumberOfVertices));
+        //            ed.WriteMessage(String.Format("\n Edges    : {0}", mesh.NumberOfEdges));
+        //            ed.WriteMessage(String.Format("\n Faces    : {0}", mesh.NumberOfFaces));
 
-                    // Get the Face information
-                    int[] faceArr = mesh.FaceArray.ToArray();
-                    int edges = 0;
-                    int fcount = 0;
+        //            // Get the Face information
+        //            int[] faceArr = mesh.FaceArray.ToArray();
+        //            int edges = 0;
+        //            int fcount = 0;
 
-                    for (int x = 0; x < faceArr.Length; x = x + edges + 1)
-                    {
-                        ed.WriteMessage(String.Format("\n Face {0} : ", fcount++));
+        //            for (int x = 0; x < faceArr.Length; x = x + edges + 1)
+        //            {
+        //                ed.WriteMessage(String.Format("\n Face {0} : ", fcount++));
 
-                        edges = faceArr[x];
-                        for (int y = x + 1; y <= x + edges; y++)
-                        {
-                            ed.WriteMessage(String.Format("\n\t Edge - {0}", faceArr[y]));
-                        }
-                    }
+        //                edges = faceArr[x];
+        //                for (int y = x + 1; y <= x + edges; y++)
+        //                {
+        //                    ed.WriteMessage(String.Format("\n\t Edge - {0}", faceArr[y]));
+        //                }
+        //            }
 
-                    // Get the Edge information
-                    int ecount = 0;
-                    int[] edgeArr = mesh.EdgeArray.ToArray();
+        //            // Get the Edge information
+        //            int ecount = 0;
+        //            int[] edgeArr = mesh.EdgeArray.ToArray();
 
-                    for (int x = 0; x < edgeArr.Length; x = x + 2)
-                    {
-                        ed.WriteMessage(String.Format("\n Edge {0} : ", ecount++));
-                        ed.WriteMessage(String.Format("\n Vertex - {0}", edgeArr[x]));
-                        ed.WriteMessage(String.Format("\n Vertex - {0}", edgeArr[x + 1]));
-                    }
+        //            for (int x = 0; x < edgeArr.Length; x = x + 2)
+        //            {
+        //                ed.WriteMessage(String.Format("\n Edge {0} : ", ecount++));
+        //                ed.WriteMessage(String.Format("\n Vertex - {0}", edgeArr[x]));
+        //                ed.WriteMessage(String.Format("\n Vertex - {0}", edgeArr[x + 1]));
+        //            }
 
-                    // Get the vertices information
-                    int vcount = 0;
-                    foreach (Point3d vertex in mesh.Vertices)
-                    {
-                        ed.WriteMessage(String.Format("\n Vertex {0} - {1} {2}", vcount++, vertex.X, vertex.Y));
-                    }
-                }
-                trans.Commit();
-            }
-        }
+        //            // Get the vertices information
+        //            int vcount = 0;
+        //            foreach (Point3d vertex in mesh.Vertices)
+        //            {
+        //                ed.WriteMessage(String.Format("\n Vertex {0} - {1} {2}", vcount++, vertex.X, vertex.Y));
+        //            }
+        //        }
+        //        trans.Commit();
+        //    }
+        //}
 
         public static Point3dCollection GetSubDMeshVertices()
         {
@@ -117,7 +117,7 @@ namespace GetVerticesFromSubDMesh
             return collPoints;
         }
 
-        public static List<MeshDatas> GetMeshBlocksVertices()
+        public static List<MeshDatas> GetMeshDatas()
         {
             Document activeDoc = Application.DocumentManager.MdiActiveDocument;
             Database db = activeDoc.Database;
@@ -155,80 +155,57 @@ namespace GetVerticesFromSubDMesh
             return datas;
         }
 
-        public static void GetMeshBoundary(Point3dCollection verticies)
-        {
-            Document acDoc = Application.DocumentManager.MdiActiveDocument;
-            Database acCurDb = acDoc.Database;
+        //public static void GetMeshBoundary(Point3dCollection verticies)
+        //{
+        //    Document acDoc = Application.DocumentManager.MdiActiveDocument;
+        //    Database acCurDb = acDoc.Database;
 
-            // Start a transaction
-            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
-            {
-                // Open the Block table for read
-                BlockTable acBlkTbl;
-                acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead) as BlockTable;
+        //    // Start a transaction
+        //    using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+        //    {
+        //        // Open the Block table for read
+        //        BlockTable acBlkTbl;
+        //        acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead) as BlockTable;
 
-                // Open the Block table record Model space for write
-                BlockTableRecord acBlkTblRec;
-                acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+        //        // Open the Block table record Model space for write
+        //        BlockTableRecord acBlkTblRec;
+        //        acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                // Create a polyline with two segments (3 points)
-                using (Polyline acPoly = new Polyline())
-                {
-                    int vnr = 0;
-                    int incr = 0;
+        //        // Create a polyline with two segments (3 points)
+        //        using (Polyline acPoly = new Polyline())
+        //        {
+        //            int vnr = 0;
+        //            int incr = 0;
 
-                    #region All verticies
-                    for (int i = 0; i < verticies.Count; i++)
-                    {
-                        acPoly.AddVertexAt(vnr, new Point2d(verticies[i].X, verticies[i].Y), 0, 0, 0);
-                        vnr++;
-                    }
-                    #endregion
+        //            #region All verticies
+        //            for (int i = 0; i < verticies.Count; i++)
+        //            {
+        //                acPoly.AddVertexAt(vnr, new Point2d(verticies[i].X, verticies[i].Y), 0, 0, 0);
+        //                vnr++;
+        //            }
+        //            #endregion
 
-                    //#region Distance between verticies max 5meter
-                    //while (vnr < verticies.Count && 1+ incr < verticies.Count)
-                    //{
-                    //    if (cPoint.Distance(verticies[incr], verticies[1+ incr]) < 5) //Distance between verticies max 5meter
-                    //    {
-                    //        acPoly.AddVertexAt(vnr, new Point2d(verticies[incr].X, verticies[incr].Y), 0, 0, 0);
-                    //        //verticies.RemoveAt(incr);
-                    //        vnr++;
-                    //    }
-                    //    incr++;
-                    //}
-                    //#endregion
+        //            //#region Distance between verticies max 5meter
+        //            //while (vnr < verticies.Count && 1+ incr < verticies.Count)
+        //            //{
+        //            //    if (cPoint.Distance(verticies[incr], verticies[1+ incr]) < 5) //Distance between verticies max 5meter
+        //            //    {
+        //            //        acPoly.AddVertexAt(vnr, new Point2d(verticies[incr].X, verticies[incr].Y), 0, 0, 0);
+        //            //        //verticies.RemoveAt(incr);
+        //            //        vnr++;
+        //            //    }
+        //            //    incr++;
+        //            //}
+        //            //#endregion
 
-                    // Add the new object to the block table record and the transaction
-                    acBlkTblRec.AppendEntity(acPoly);
-                    acTrans.AddNewlyCreatedDBObject(acPoly, true);
-                }
+        //            // Add the new object to the block table record and the transaction
+        //            acBlkTblRec.AppendEntity(acPoly);
+        //            acTrans.AddNewlyCreatedDBObject(acPoly, true);
+        //        }
 
-                // Save the new object to the database
-                acTrans.Commit();
-            }
-        }
-
-        public static void GetMeshExtents(SubDMesh mesh)
-        {
-            Extents3d extents;
-            try
-            {
-                extents = mesh.GeometricExtents;
-            }
-            catch (Autodesk.AutoCAD.Runtime.Exception ex)
-            {
-                if (ex.Message == "eNullExtents")
-                // The entity is empty and has no extents
-                {
-                    // TODO. We can simply skip this entity...
-                }
-                else
-                {
-                    //  something is wrong ...
-                    //TODO!
-
-                }
-            }
-        }
+        //        // Save the new object to the database
+        //        acTrans.Commit();
+        //    }
+        //}
     }
 }

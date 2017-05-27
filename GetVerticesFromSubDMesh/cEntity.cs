@@ -55,14 +55,11 @@ namespace GetVerticesFromSubDMesh
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
 
-            if (acEnt != null)
-            {
-                string strHandle = acEnt.Handle.ToString();
-                acDoc.SendStringToExecute("lineworkshrinkwrap ", true, false, false);
+            string strHandle = acEnt.Handle.ToString();
+            acDoc.SendStringToExecute("lineworkshrinkwrap ", true, false, false);
 
-                string command = (string.Format("(handent \"" + strHandle + "\") "));
-                acDoc.SendStringToExecute(command, true, false, false);
-            }
+            string command = string.Format("(handent \"" + strHandle + "\") ");
+            acDoc.SendStringToExecute(command, true, false, false);
         }
     }
 }
