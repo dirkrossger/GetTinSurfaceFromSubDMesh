@@ -17,40 +17,6 @@ namespace GetVerticesFromSubDMesh
 {
     class cEntity
     {
-        public static void SelectObjectsToEnclose()
-        {
-            Document acDoc = Application.DocumentManager.MdiActiveDocument;
-            Database acCurDb = acDoc.Database;
-
-            using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
-            {
-                PromptSelectionResult acSSPrompt = acDoc.Editor.GetSelection();
-
-                if (acSSPrompt.Status == PromptStatus.OK)
-                {
-                    SelectionSet acSSet = acSSPrompt.Value;
-
-                    foreach (SelectedObject acSSObj in acSSet)
-                    {
-                        // Check to make sure a valid SelectedObject object was returned
-                        if (acSSObj != null)
-                        {
-                            // Open the selected object for write
-                            Entity acEnt = acTrans.GetObject(acSSObj.ObjectId, OpenMode.ForRead) as Entity;
-
-                            if (acEnt != null)
-                            {
-                                string strHandle = acEnt.Handle.ToString();
-                                string command = (string.Format("(handent \"" + strHandle + "\")  "));
-                                acDoc.SendStringToExecute("lineworkshrinkwrap ", true, false, false);
-                                acDoc.SendStringToExecute(command, true, false, false);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         public static void ObjectsToEnclose(Entity acEnt)
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
@@ -60,6 +26,32 @@ namespace GetVerticesFromSubDMesh
 
             string command = string.Format("(handent \"" + strHandle + "\") ");
             acDoc.SendStringToExecute(command, true, false, false);
+        }
+
+        public static ObjectId GetLastEntity()
+        {
+            return Autodesk.AutoCAD.Internal.Utils.EntLast();
+        }
+
+        public static void CurrentlySelected()
+        {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            PromptSelectionResult selectionResult = acDoc.Editor.SelectImplied();
+
+            if (selectionResult.Status == PromptStatus.OK)
+            {
+                using (Transaction tr = acDoc.Database.TransactionManager.StartTransaction())
+                {
+                    SelectionSet currentlySelectedEntities = selectionResult.Value;
+                    foreach (ObjectId id in currentlySelectedEntities.GetObjectIds())
+                    {
+                        Entity ent = tr.GetObject(id, OpenMode.ForRead) as Entity;
+                        acDoc.Editor.WriteMessage("\n..." + ent.ToString());
+                    }
+                }
+            }
+            else
+                acDoc.Editor.WriteMessage("\n...SelectionResult.Status=" + selectionResult.Status.ToString());
         }
     }
 }

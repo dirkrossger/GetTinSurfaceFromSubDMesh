@@ -24,6 +24,7 @@ namespace GetVerticesFromSubDMesh
         public cTinSurface() { }
 
         private TinSurface ts;
+        private ObjectId border;
         private Document acadDoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
 
         public void CreateTinSurface(string m_Name, string m_Stylename, string m_Description)
@@ -68,6 +69,49 @@ namespace GetVerticesFromSubDMesh
             {
                 ed.WriteMessage("\nError: Can´t add Vertices from SubDMesh!");
             }
+        }
+
+        public void GetBorderFromSurface()
+        {
+            ObjectIdCollection entityIds = ts.ExtractBorder(Autodesk.Civil.SurfaceExtractionSettingsType.Model);
+            border = ObjectId.Null;
+
+            try
+            {
+                for (int i = 0; i < entityIds.Count; i++)
+                {
+                    ObjectId entityId = entityIds[i];
+                    if (entityId.ObjectClass == RXClass.GetClass(typeof(Polyline3d)))
+                    {
+                        border = entityId; //entityId.GetObject(OpenMode.ForRead) as Polyline3d;
+                    }
+                }
+            }
+            catch(System.Exception ex)
+            { }
+        }
+
+        public void AddBoundaryToSurfaceHide()
+        {
+            Editor ed = acadDoc.Editor;
+            ObjectId[] boundaries = { border };
+
+            try
+            {
+                ts.BoundariesDefinition.AddBoundaries(
+                    new ObjectIdCollection(boundaries), 100, Autodesk.Civil.SurfaceBoundaryType.Hide, true);
+                ts.Rebuild();
+            }
+
+            catch (System.Exception e)
+            {
+                ed.WriteMessage("Failed to add the boundary: {0}", e.Message);
+            }
+        }
+
+        public void AddBoundaryToSurfaceShow()
+        {
+
         }
     }
 }

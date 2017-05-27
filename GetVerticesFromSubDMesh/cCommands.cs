@@ -18,28 +18,41 @@ namespace GetVerticesFromSubDMesh
 {
     public class Commands
     {
+        private ObjectIdCollection PolylineColl;
+
         [CommandMethod("xx")]
         public void Start()
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
-
             List<MeshDatas> list = cMesh.GetMeshDatas();
 
-            #region Create Boundary from SubDMesh object
+            // Create Boundaries from SubDMesh object
             foreach (MeshDatas x in list)
             {
                 cEntity.ObjectsToEnclose(x.Mesh as Entity);
             }
             acDoc.SendStringToExecute(" ", true, false, false);
-            #endregion
 
-            #region Create Surface from SubDMesh object
+            // Create Surface from SubDMesh object and Add Vertices
             cTinSurface oTinsurf = new cTinSurface();
             oTinsurf.CreateTinSurface("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
             oTinsurf.AddPointsToSurface();
+
+            // Create Borderline from Surface
+            oTinsurf.GetBorderFromSurface();
+
+            // Add Borderline to Surface and Hide ...
+            oTinsurf.AddBoundaryToSurfaceHide();
+
+            #region Collect all creates 2dPolylines (Boundaries)
+            if (PolylineColl == null)
+            {
+                PolylineColl = new ObjectIdCollection();
+            }
+            ObjectId id = cEntity.GetLastEntity();
+            cEntity.CurrentlySelected();
             #endregion
         }
-
     }
 
 
