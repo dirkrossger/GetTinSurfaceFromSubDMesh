@@ -53,18 +53,11 @@ namespace GetVerticesFromSubDMesh
             cEntity.CurrentlySelected();
             #endregion
         }
+
+        [CommandMethod("zz")]
+        public void Explode()
+        {
+            cEntity.ExplodeToOwnerSpace();
+        }
     }
-
-
-
-    //#region Create Points on vertices from SubDMesh
-    //public void Start()
-    //{
-    //    Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
-    //    foreach(Point3d p3 in coll3d)
-    //    {
-    //        cPoint.AddPoint(p3);
-    //    }
-    //}
-    //#endregion
 }

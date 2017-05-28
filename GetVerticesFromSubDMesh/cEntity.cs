@@ -53,5 +53,44 @@ namespace GetVerticesFromSubDMesh
             else
                 acDoc.Editor.WriteMessage("\n...SelectionResult.Status=" + selectionResult.Status.ToString());
         }
+
+        static ObjectIdCollection ids = new ObjectIdCollection();
+        public static void ExplodeToOwnerSpace()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+
+            PromptEntityOptions options = new PromptEntityOptions("\nSelect block reference");
+            options.SetRejectMessage("\nSelect only block reference");
+            options.AddAllowedClass(typeof(BlockReference), false);
+
+            PromptEntityResult acSSPrompt = ed.GetEntity(options);
+
+            using (Transaction tx = db.TransactionManager.StartTransaction())
+            {
+                BlockReference blockRef = tx.GetObject(acSSPrompt.ObjectId, OpenMode.ForRead) as BlockReference;
+                //add event
+                ids.Clear();
+                db.ObjectAppended += new ObjectEventHandler(db_ObjectAppended);
+                blockRef.ExplodeToOwnerSpace();
+                //remove event
+                db.ObjectAppended -= new ObjectEventHandler(db_ObjectAppended);
+
+                foreach (ObjectId id in ids)
+                {
+                    //get each entity....
+                    ed.WriteMessage("\n" + id.ToString());
+                }
+
+                tx.Commit();
+            }
+        }
+
+        static void db_ObjectAppended(object sender, ObjectEventArgs e)
+        {
+            //add the object id
+            ids.Add(e.DBObject.ObjectId);
+        }
     }
 }
