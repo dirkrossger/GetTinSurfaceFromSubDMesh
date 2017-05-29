@@ -27,7 +27,7 @@ namespace GetVerticesFromSubDMesh
         private ObjectId border;
         private Document acadDoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
 
-        public void CreateTinSurface(string m_Name, string m_Stylename, string m_Description)
+        public void Create(string m_Name, string m_Stylename, string m_Description)
         {
             Editor ed = acadDoc.Editor;
             ObjectId m_SurfaceId = ObjectId.Null;
@@ -64,6 +64,20 @@ namespace GetVerticesFromSubDMesh
             {
                 Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
                 ts.AddVertices(coll3d);
+            }
+            catch (System.Exception ex)
+            {
+                ed.WriteMessage("\nError: Can´t add Vertices from SubDMesh!");
+            }
+        }
+
+        public void AddPointsToSurface(Point3dCollection Points)
+        {
+            Editor ed = acadDoc.Editor;
+
+            try
+            {
+                ts.AddVertices(Points);
             }
             catch (System.Exception ex)
             {
