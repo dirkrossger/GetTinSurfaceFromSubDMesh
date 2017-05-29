@@ -18,46 +18,74 @@ namespace GetVerticesFromSubDMesh
 {
     public class Commands
     {
-        private ObjectIdCollection PolylineColl;
-
+        cTinSurface oTinsurf = new cTinSurface();
         [CommandMethod("xx")]
         public void Start()
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
             List<MeshDatas> list = cMesh.GetMeshDatas();
 
-            // Create Boundaries from SubDMesh object
-            foreach (MeshDatas x in list)
+            try
             {
-                cEntity.ObjectsToEnclose(x.Mesh as Entity);
+                foreach (MeshDatas x in list)
+                {
+                    oTinsurf.Create("Test", "Trianglar Punkter och gräns", "Created from SubDMesh");
+                    oTinsurf.AddPointsToSurface(x.Points);
+                    oTinsurf.GetBorderFromSurface();
+                    //oTinsurf.Remove();
+                }
             }
-            acDoc.SendStringToExecute(" ", true, false, false);
+            catch(System.Exception)
+            { }
 
-            // Create Surface from SubDMesh object and Add Vertices
-            cTinSurface oTinsurf = new cTinSurface();
-            oTinsurf.CreateTinSurface("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
-            oTinsurf.AddPointsToSurface();
 
-            // Create Borderline from Surface
-            oTinsurf.GetBorderFromSurface();
-
-            // Add Borderline to Surface and Hide ...
-            oTinsurf.AddBoundaryToSurfaceHide();
-
-            #region Collect all creates 2dPolylines (Boundaries)
-            if (PolylineColl == null)
-            {
-                PolylineColl = new ObjectIdCollection();
-            }
-            ObjectId id = cEntity.GetLastEntity();
-            cEntity.CurrentlySelected();
-            #endregion
         }
+        //private ObjectIdCollection PolylineColl;
 
-        [CommandMethod("zz")]
-        public void Explode()
-        {
-            cEntity.ExplodeToOwnerSpace();
-        }
+        //public void WorkswithLineworkshrinkwrap()
+        //{
+        //    Document acDoc = Application.DocumentManager.MdiActiveDocument;
+        //    List<MeshDatas> list = cMesh.GetMeshDatas();
+
+        //    // Create Boundaries from SubDMesh object
+        //    foreach (MeshDatas x in list)
+        //    {
+        //        cEntity.ObjectsToEnclose(x.Mesh as Entity);
+        //    }
+        //    acDoc.SendStringToExecute(" ", true, false, false);
+
+        //    // Create Surface from SubDMesh object and Add Vertices
+        //    cTinSurface oTinsurf = new cTinSurface();
+        //    oTinsurf.CreateTinSurface("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
+        //    oTinsurf.AddPointsToSurface();
+
+        //    // Create Borderline from Surface
+        //    oTinsurf.GetBorderFromSurface();
+
+        //    // Add Borderline to Surface and Hide ...
+        //    oTinsurf.AddBoundaryToSurfaceHide();
+
+        //    #region Collect all creates 2dPolylines (Boundaries)
+        //    if (PolylineColl == null)
+        //    {
+        //        PolylineColl = new ObjectIdCollection();
+        //    }
+        //    ObjectId id = cEntity.GetLastEntity();
+        //    cEntity.CurrentlySelected();
+        //    #endregion
+        //}
     }
+
+
+
+    //#region Create Points on vertices from SubDMesh
+    //public void Start()
+    //{
+    //    Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
+    //    foreach(Point3d p3 in coll3d)
+    //    {
+    //        cPoint.AddPoint(p3);
+    //    }
+    //}
+    //#endregion
 }
