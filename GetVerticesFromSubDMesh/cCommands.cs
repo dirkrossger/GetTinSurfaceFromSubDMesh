@@ -32,7 +32,6 @@ namespace GetVerticesFromSubDMesh
                     oTinsurf.Create("Test", "Trianglar Punkter och gräns", "Created from SubDMesh");
                     oTinsurf.AddPointsToSurface(x.Points);
                     oTinsurf.GetBorderFromSurface();
-                    //oTinsurf.Remove();
                 }
             }
             catch(System.Exception)
