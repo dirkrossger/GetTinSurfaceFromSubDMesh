@@ -18,73 +18,49 @@ namespace GetVerticesFromSubDMesh
 {
     public class Commands
     {
-        cTinSurface oTinsurf = new cTinSurface();
-        [CommandMethod("xx")]
-        public void Start()
+        [CommandMethod("xPoints")]
+        public void GetPointsMesh()
         {
-            Document acDoc = Application.DocumentManager.MdiActiveDocument;
-            List<MeshDatas> list = cMesh.GetMeshDatas();
-
-            try
+            Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
+            foreach (Point3d p3 in coll3d)
             {
-                foreach (MeshDatas x in list)
-                {
-                    oTinsurf.Create("Test", "Trianglar Punkter och gräns", "Created from SubDMesh");
-                    oTinsurf.AddPointsToSurface(x.Points);
-                    oTinsurf.GetBorderFromSurface();
-                }
+                cPoint.AddPoint(p3);
             }
-            catch(System.Exception)
-            { }
-
-
         }
-        //private ObjectIdCollection PolylineColl;
 
-        //public void WorkswithLineworkshrinkwrap()
-        //{
-        //    Document acDoc = Application.DocumentManager.MdiActiveDocument;
-        //    List<MeshDatas> list = cMesh.GetMeshDatas();
+        [CommandMethod("xPolyline")]
+        public void Enclose()
+        {
+            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
 
-        //    // Create Boundaries from SubDMesh object
-        //    foreach (MeshDatas x in list)
-        //    {
-        //        cEntity.ObjectsToEnclose(x.Mesh as Entity);
-        //    }
-        //    acDoc.SendStringToExecute(" ", true, false, false);
-
-        //    // Create Surface from SubDMesh object and Add Vertices
-        //    cTinSurface oTinsurf = new cTinSurface();
-        //    oTinsurf.CreateTinSurface("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
-        //    oTinsurf.AddPointsToSurface();
-
-        //    // Create Borderline from Surface
-        //    oTinsurf.GetBorderFromSurface();
-
-        //    // Add Borderline to Surface and Hide ...
-        //    oTinsurf.AddBoundaryToSurfaceHide();
-
-        //    #region Collect all creates 2dPolylines (Boundaries)
-        //    if (PolylineColl == null)
-        //    {
-        //        PolylineColl = new ObjectIdCollection();
-        //    }
-        //    ObjectId id = cEntity.GetLastEntity();
-        //    cEntity.CurrentlySelected();
-        //    #endregion
-        //}
+            cEntity oEnt = new cEntity();
+            TypedValue[] filter = new TypedValue[1] { new TypedValue(0, "POINT") };
+            PromptSelectionResult psr = ed.GetSelection(new SelectionFilter(filter));
+            if (psr.Status != PromptStatus.OK) return;
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            using (Polyline pline = new Polyline())
+            {
+                List<Point2d> pts = new List<Point2d>();
+                foreach (SelectedObject so in psr.Value)
+                {
+                    DBPoint dbPt = (DBPoint)tr.GetObject(so.ObjectId, OpenMode.ForRead);
+                    pts.Add(new Point2d(dbPt.Position.X, dbPt.Position.Y));
+                }
+                pts = oEnt.ConvexHull(pts);
+                for (int i = 0; i < pts.Count; i++)
+                {
+                    pline.AddVertexAt(i, pts[i], 0.0, 0.0, 0.0);
+                }
+                pline.Closed = true;
+                pline.SetDatabaseDefaults();
+                BlockTableRecord btr = (BlockTableRecord)tr.GetObject(db.CurrentSpaceId, OpenMode.ForWrite);
+                btr.AppendEntity(pline);
+                tr.AddNewlyCreatedDBObject(pline, true);
+                tr.Commit();
+            }
+        }
     }
 
-
-
-    //#region Create Points on vertices from SubDMesh
-    //public void Start()
-    //{
-    //    Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
-    //    foreach(Point3d p3 in coll3d)
-    //    {
-    //        cPoint.AddPoint(p3);
-    //    }
-    //}
-    //#endregion
 }

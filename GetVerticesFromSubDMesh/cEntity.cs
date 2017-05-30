@@ -17,6 +17,7 @@ namespace GetVerticesFromSubDMesh
 {
     class cEntity
     {
+        public cEntity(){}
         public static void ObjectsToEnclose(Entity acEnt)
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
@@ -54,6 +55,7 @@ namespace GetVerticesFromSubDMesh
                 acDoc.Editor.WriteMessage("\n...SelectionResult.Status=" + selectionResult.Status.ToString());
         }
 
+        #region Collect Entity from exploded Block
         static ObjectIdCollection ids = new ObjectIdCollection();
         public static void ExplodeToOwnerSpace()
         {
@@ -92,5 +94,36 @@ namespace GetVerticesFromSubDMesh
             //add the object id
             ids.Add(e.DBObject.ObjectId);
         }
+        #endregion
+
+        #region Create Polyline from DbPoints
+        private Point2d _p0;
+
+        private bool Clockwise(Point2d p1, Point2d p2, Point2d p3)
+        {
+            return ((p2.X - p1.X) * (p3.Y - p1.Y) - (p2.Y - p1.Y) * (p3.X - p1.X)) < 1e-9;
+        }
+
+        private double Cosine(Point2d pt)
+        {
+            double d = _p0.GetDistanceTo(pt);
+            return d == 0.0 ? 1.0 : Math.Round((pt.X - _p0.X) / d, 9);
+        }
+
+        public List<Point2d> ConvexHull(List<Point2d> pts)
+        {
+            _p0 = pts.OrderBy(p => p.Y).ThenBy(p => p.X).First();
+            pts = pts.OrderByDescending(p => Cosine(p)).ThenBy(p => _p0.GetDistanceTo(p)).ToList();
+            for (int i = 1; i < pts.Count - 1; i++)
+            {
+                while (i > 0 && Clockwise(pts[i - 1], pts[i], pts[i + 1]))
+                {
+                    pts.RemoveAt(i);
+                    i--;
+                }
+            }
+            return pts;
+        }
+        #endregion
     }
 }
