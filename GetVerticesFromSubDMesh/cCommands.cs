@@ -18,7 +18,7 @@ namespace GetVerticesFromSubDMesh
 {
     public class Commands
     {
-        [CommandMethod("xPoints")]
+        [CommandMethod("xMeshPoints")]
         public void GetPointsMesh()
         {
             Point3dCollection coll3d = cMesh.GetSubDMeshVertices();
@@ -28,14 +28,14 @@ namespace GetVerticesFromSubDMesh
             }
         }
 
-        [CommandMethod("xPolyline")]
-        public void Enclose()
+        [CommandMethod("xEnclosePoints_Polyline")]
+        public void EnclosePoints_Polyline()
         {
             Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             Editor ed = doc.Editor;
 
-            cEntity oEnt = new cEntity();
+            cPoint oPoint = new cPoint();
             TypedValue[] filter = new TypedValue[1] { new TypedValue(0, "POINT") };
             PromptSelectionResult psr = ed.GetSelection(new SelectionFilter(filter));
             if (psr.Status != PromptStatus.OK) return;
@@ -48,7 +48,7 @@ namespace GetVerticesFromSubDMesh
                     DBPoint dbPt = (DBPoint)tr.GetObject(so.ObjectId, OpenMode.ForRead);
                     pts.Add(new Point2d(dbPt.Position.X, dbPt.Position.Y));
                 }
-                pts = oEnt.ConvexHull(pts);
+                pts = oPoint.ConvexHull(pts);
                 for (int i = 0; i < pts.Count; i++)
                 {
                     pline.AddVertexAt(i, pts[i], 0.0, 0.0, 0.0);
@@ -60,6 +60,51 @@ namespace GetVerticesFromSubDMesh
                 tr.AddNewlyCreatedDBObject(pline, true);
                 tr.Commit();
             }
+        }
+
+        [CommandMethod("xEnclosePoints_Rectangle")]
+        public void EnclosePoints_Rectangle()
+        {
+            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Database acCurDb = doc.Database;
+            Editor ed = doc.Editor;
+
+            Point3dCollection  pts = cPoint.GetPoints();
+            CoordinateSystem3d ucs = ed.CurrentUserCoordinateSystem.CoordinateSystem3d;
+            //object bufvar = Application.GetSystemVariable("ENCLOSINGBOUNDARYBUFFER");
+            //if (bufvar != null)
+            //{
+            //    short bufval = (short)bufvar;
+            //    double buffer = bufval / 100.0;
+            //    cPoint.RectangleFromPoints(pts, ucs, buffer);
+            //}
+
+            try
+            {
+                Entity rectang = cPoint.RectangleFromPoints(pts, ucs);
+
+                using (Transaction acTrans = acCurDb.TransactionManager.StartTransaction())
+                {
+                    // Open the Block table for read
+                    BlockTable acBlkTbl;
+                    acBlkTbl = acTrans.GetObject(acCurDb.BlockTableId, OpenMode.ForRead) as BlockTable;
+
+                    // Open the Block table record Model space for write
+                    BlockTableRecord acBlkTblRec;
+                    acBlkTblRec = acTrans.GetObject(acBlkTbl[BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+
+                    using (Polyline2d poly = new Polyline2d())
+                    {
+                        // Add the new object to the block table record and the transaction
+                        acBlkTblRec.AppendEntity(rectang);
+                        acTrans.AddNewlyCreatedDBObject(rectang, true);
+                    }
+
+                    // Save the new object to the database
+                    acTrans.Commit();
+                }
+            }
+            catch(System.Exception ex) { }
         }
     }
 
