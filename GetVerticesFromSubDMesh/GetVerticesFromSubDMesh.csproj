@@ -31,22 +31,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="accoremgd">
-      <HintPath>H:\Dropbox\Symetri\Acad.net.library\2017\accoremgd.dll</HintPath>
+      <HintPath>..\..\..\_acad.net.library\2014\accoremgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>H:\Dropbox\Symetri\Acad.net.library\2017\acdbmgd.dll</HintPath>
+      <HintPath>..\..\..\_acad.net.library\2014\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>H:\Dropbox\Symetri\Acad.net.library\2017\acmgd.dll</HintPath>
+      <HintPath>..\..\..\_acad.net.library\2014\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="AecBaseMgd">
-      <HintPath>H:\Dropbox\Symetri\Acad.net.library\2017\AecBaseMgd.dll</HintPath>
+      <HintPath>..\..\..\_acad.net.library\2014\AecBaseMgd.dll</HintPath>
     </Reference>
     <Reference Include="AeccDbMgd">
-      <HintPath>H:\Dropbox\Symetri\Acad.net.library\2017\AeccDbMgd.dll</HintPath>
+      <HintPath>..\..\..\_acad.net.library\2014\AeccDbMgd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

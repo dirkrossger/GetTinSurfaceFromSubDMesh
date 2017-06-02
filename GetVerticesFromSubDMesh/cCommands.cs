@@ -69,7 +69,7 @@ namespace GetVerticesFromSubDMesh
             Database acCurDb = doc.Database;
             Editor ed = doc.Editor;
 
-            Point3dCollection  pts = cPoint.GetPoints();
+            Point3dCollection pts = cPoint.GetPoints();
             CoordinateSystem3d ucs = ed.CurrentUserCoordinateSystem.CoordinateSystem3d;
             //object bufvar = Application.GetSystemVariable("ENCLOSINGBOUNDARYBUFFER");
             //if (bufvar != null)
@@ -104,8 +104,36 @@ namespace GetVerticesFromSubDMesh
                     acTrans.Commit();
                 }
             }
-            catch(System.Exception ex) { }
+            catch (System.Exception ex) { }
+        }
+
+        [CommandMethod("xTinsurfaceFromMesh")]
+        public void TinsurfaceFromMesh()
+        {
+            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+
+            List<MeshDatas> list = cMesh.GetMeshDatas();
+
+            #region Create Boundary from SubDMesh object
+            // Create Boundaries from SubDMesh object
+            foreach (MeshDatas x in list)
+            {
+                cEntity.ObjectsToEnclose(x.Mesh as Entity);
+            }
+            acDoc.SendStringToExecute(" ", true, false, false);
+            #endregion
+
+            // Create Surface from SubDMesh object and Add Vertices
+            cTinSurface oTinsurf = new cTinSurface();
+            oTinsurf.Create("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
+            oTinsurf.AddPointsToSurface();
+
+            // Create Borderline from Surface
+            oTinsurf.GetBorderFromSurface();
+
+            // Add Borderline to Surface and Hide ...
+            oTinsurf.AddBoundaryToSurfaceHide();
+
         }
     }
-
 }
