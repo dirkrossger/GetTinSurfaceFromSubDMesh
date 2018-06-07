@@ -112,27 +112,34 @@ namespace GetVerticesFromSubDMesh
         {
             Document acDoc = Application.DocumentManager.MdiActiveDocument;
 
-            List<MeshDatas> list = cMesh.GetMeshDatas();
-
-            #region Create Boundary from SubDMesh object
-            // Create Boundaries from SubDMesh object
-            foreach (MeshDatas x in list)
+            try
             {
-                cEntity.ObjectsToEnclose(x.Mesh as Entity);
+                List<MeshDatas> list = cMesh.GetMeshDatas();
+
+                #region Create Boundary from SubDMesh object
+                // Create Boundaries from SubDMesh object
+                foreach (MeshDatas x in list)
+                {
+                    cEntity.ObjectsToEnclose(x.Mesh as Entity);
+                }
+                acDoc.SendStringToExecute(" ", true, false, false);
+                #endregion
+
+                // Create Surface from SubDMesh object and Add Vertices
+                cTinSurface oTinsurf = new cTinSurface();
+                oTinsurf.Create("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
+                oTinsurf.AddPointsToSurface();
+
+                // Create Borderline from Surface
+                oTinsurf.GetBorderFromSurface();
+
+                // Add Borderline to Surface and Hide ...
+                oTinsurf.AddBoundaryToSurfaceHide();
             }
-            acDoc.SendStringToExecute(" ", true, false, false);
-            #endregion
-
-            // Create Surface from SubDMesh object and Add Vertices
-            cTinSurface oTinsurf = new cTinSurface();
-            oTinsurf.Create("Test", "Trianglar Punkter och gräns", "Created from SubDMesh"); // "Nivåkurvor och gräns"
-            oTinsurf.AddPointsToSurface();
-
-            // Create Borderline from Surface
-            oTinsurf.GetBorderFromSurface();
-
-            // Add Borderline to Surface and Hide ...
-            oTinsurf.AddBoundaryToSurfaceHide();
+            catch(System.Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Can´t create TinSurface, error:" + ex);
+            }
 
         }
     }

@@ -21,3 +21,4 @@ h:\GitExtensions\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\Get
 h:\GitExtensions\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\bin\Debug\GetVerticesFromSubDMesh.pdb
 h:\GitExtensions\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.dll
 h:\GitExtensions\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.pdb
+H:\GitExtensions\GetTinSurfaceFromSubDMesh\GetVerticesFromSubDMesh\obj\Debug\GetVerticesFromSubDMesh.csprojResolveAssemblyReference.cache
