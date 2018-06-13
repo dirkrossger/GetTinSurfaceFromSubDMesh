@@ -92,6 +92,8 @@
     <Compile Include="cExtension.cs" />
     <Compile Include="cMesh.cs" />
     <Compile Include="cPoint.cs" />
+    <Compile Include="PFace.cs" />
+    <Compile Include="PointTriangulation.cs" />
     <Compile Include="cTinSurface.cs" />
     <Compile Include="MeshDatas.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
